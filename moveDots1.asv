@@ -13,8 +13,6 @@ meta.computer = 0;  % 0 = laptop, 1 = lab
 meta.debugging = 1;
 meta.initialSeed = ClockRandSeed;
 
-meta.sessionType = 2; % 0 - debug, 1 - all blocktypes, 2 - dual task only
-
 p.nTargets = 2;
 
 fprintf('\nSubject: %s\n', meta.subj);
@@ -48,29 +46,27 @@ cond.blocklabel = {'Dual Task: Same Up', ...	% (1) Dual Same (up left)
     'Dual Task: Same Down', ...                 % (2) Dual Same (down left)
     'Dual Task: Different Up', ...         % (3) Dual Different (left up)
     'Dual Task: Different Down', ...       % (4) Dual Different (left down)
-    ...
+    
     'Single Task Left: Same Up', ...                 % (5) Single Same
     'Single Task Left: Same Down', ...               % (6) Single Same
     'Single Task Left: Different Up', ...       % (7) Single Different
     'Single Task Left: Different Down', ...     % (8) Single Different
-    ...
+    
     'Single Task Right: Same Up', ...                   % (9) Single Same
     'Single Task Right: Same Down', ...                 % (10) Single Same
     'Single Task Right: Different Up', ...         % (11) Single Different
     'Single Task Right: Different Down', ...       % (12) Single Different
     };
 
-if meta.sessionType == 0
+if ~meta.debugging
     % 24 trials and this block structure gives 48 trials per condition -
     % this might be underpowered.
-    cond.nTrials = 1;                          % Number of trials per block
+    cond.nTrials = 24;                          % Number of trials per block
     cond.blockvector = [1,2,3,4,1,2,3,4,5,6,7,8,9,10,11,12];
-    
-elseif meta.sessionType == 1
+elseif sessionType == 1
     cond.nTrials = 24;
     cond.blockvector = [1,2,3,4,5,6,7,8,9,10,11,12];
-    
-elseif meta.sessionType == 2
+elseif sessionTyep == 2
     cond.nTrials = 24;
     cond.blockvector = [1,2,3,4, 1,2,3,4, 1,2,3,4];
 end
@@ -173,17 +169,17 @@ R2 = (3*p.nDots+1):4*p.nDots;
 %% Timing (secs then frames)
 time.pretrial = .2;         % fixation time before cue
 time.pretrialframes = round(time.pretrial/display.ifi);
-time.cue = .5;              % cue time before dots
+time.cue = 1;              % cue time before dots
 time.cueframes = round(time.cue/display.ifi);
-time.CSI = .25;              % time between cue and dots
+time.CSI = .5;              % time between cue and dots
 time.CSIframes = round(time.cue/display.ifi);
-time.ITI = .25;              % time between end of last trial and start of next
+time.ITI = .3;              % time between end of last trial and start of next
 time.ITIframes = round(time.ITI/display.ifi);
 time.stim = 2.5;             % how long for dots
 time.stimframes = round(time.stim/display.ifi);
 time.SRI = .25;             % Time between dots offset and cue to responde
 time.SRIframes = round(time.SRI/display.ifi);
-time.resp = 1.25;              % how long to respond (window to respond in, does not make trial happen faster)
+time.resp = 2;              % how long to respond (window to respond in, does not make trial happen faster)
 time.respframes = round(time.resp/display.ifi);
 time.TT = time.pretrial + time.ITI + time.stim + time.resp;
 
@@ -274,7 +270,6 @@ try
         
         trial = 1;
         while trial <= cond.nTrials
-            tic
             thistrial = trial + cond.nTrials*(block-1); % count for total trials
             
             
@@ -529,7 +524,7 @@ try
             else
                 trial = trial + 1; % Update trial number
             end
-            toc
+            
         end
         % Save some stuff after every block
         blockFileNum =  sprintf('%02d',block);    % New file saved for this block

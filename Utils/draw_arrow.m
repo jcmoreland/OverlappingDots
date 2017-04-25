@@ -46,12 +46,12 @@ function draw_arrow(w, center_coords, arrow_rotation, arrow_color, dimension_arr
         % rotate first point in dim array
         [original_angle, radius, ] = cart2pol(dim_array(1), dim_array(2));
         new_angle = original_angle + rotate_radians;
-        [rotated_array(1) rotated_array(2)] = pol2cart(new_angle, radius);
+        [rotated_array(1), rotated_array(2)] = pol2cart(new_angle, radius);
         
         % rotate second point in dim array
         [original_angle, radius, ] = cart2pol(dim_array(3), dim_array(4));
         new_angle = original_angle + rotate_radians;
-        [rotated_array(3) rotated_array(4)] = pol2cart(new_angle, radius);
+        [rotated_array(3), rotated_array(4)] = pol2cart(new_angle, radius);
     end        
     
     function [rotated_screen_array] = draw_rotated_line(cart_array)
